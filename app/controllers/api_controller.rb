@@ -11,7 +11,7 @@ class ApiController < ApplicationController
   #/api/q=what does bark taste like?
   def save_transcript
     t = Transcript.new
-    t.question = params[:q]
+    t.question = CGI::unescape(params[:q])
     t.phone = 0
     t.body = params
     t.save!
