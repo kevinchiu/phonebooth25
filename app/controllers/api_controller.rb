@@ -22,7 +22,7 @@ class ApiController < ApplicationController
     q = params[:question]
     r.addSay q
     r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?q=#{q}", :timeout => 5, :maxLength => 10})
-    r.addPause({:length => 5})
+    r.addPause({:length => 1})
     r.addSay "that's interesting. goodbye."
     r.addHangup
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
