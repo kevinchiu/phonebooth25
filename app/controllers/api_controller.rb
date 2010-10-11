@@ -37,7 +37,7 @@ class ApiController < ApplicationController
     d = {
         'From' => CALLER_ID,
         'To' => phone,
-        'Url' => "#{SERVER}/api/ask?question=#{CGI::escape(q).gsub('+', '%20')}",
+        'Url' => "#{SERVER}/api/ask?question=#{CGI::escape(question).gsub('+', '%20')}",
     }
     resp = account.request("/#{API_VERSION}/Accounts/#{ACCOUNT_SID}/Calls",
         'POST', d)
