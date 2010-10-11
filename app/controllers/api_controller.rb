@@ -1,11 +1,10 @@
 class ApiController < ApplicationController
   require 'twiliolib'
-  #/api/q=what does bark taste like
+  #/api/q=what does bark taste like?
   def ask
-    @q = params[:q]
-    @r = Twilio::Response.new
-    @r.addSay "What does bark taste like?"
-    render :xml => @r.respond
+    r = Twilio::Response.new
+    r.addSay params[:q]
+    render :xml => r.respond
   end
   
   def test
@@ -14,7 +13,7 @@ class ApiController < ApplicationController
     d = {
         'From' => CALLER_ID,
         'To' => '6503532703',
-        'Url' => 'http://demo.twilio.com/welcome',
+        'Url' => 'http://phonebooth25.heroku.com/api/ask',
     }
     resp = account.request("/#{API_VERSION}/Accounts/#{ACCOUNT_SID}/Calls",
         'POST', d)
