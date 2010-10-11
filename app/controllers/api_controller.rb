@@ -12,8 +12,8 @@ class ApiController < ApplicationController
   def save_transcript
     t = Transcript.new
     t.question = CGI::unescape(params[:q])
-    t.phone = 0
-    t.body = params
+    t.phone = params[:Called]
+    t.body = params[:TranscriptionText]
     t.save!
   end
   
