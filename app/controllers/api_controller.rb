@@ -10,7 +10,7 @@ class ApiController < ApplicationController
   #/api/q=what does bark taste like?
   def save_transcript
     t = Transcript.new
-    t.question = CGI::unescapeHTML(params[:q])
+    t.question = params[:q]
     t.phone = params[:Called]
     t.body = params[:TranscriptionText]
     t.save!
@@ -20,7 +20,7 @@ class ApiController < ApplicationController
     r = Twilio::Response.new
     q = params[:question]
     r.addSay q
-    r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?q=#{CGI::escapeHTML(q)}", :timeout => 5, :maxLength => 10})
+    r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?q=#{CGI::escape(q).gsub("+", "%20")}", :timeout => 5, :maxLength => 10})
     r.addSay "that's interesting. goodbye."
     r.addHangup
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
@@ -33,7 +33,7 @@ class ApiController < ApplicationController
     d = {
         'From' => CALLER_ID,
         'To' => '6503532703',
-        'Url' => "#{SERVER}/api/ask?question=#{CGI::escapeHTML(q)}",
+        'Url' => "#{SERVER}/api/ask?question=#{CGI::escape(q).gsub("+", "%20")}",
     }
     resp = account.request("/#{API_VERSION}/Accounts/#{ACCOUNT_SID}/Calls",
         'POST', d)
