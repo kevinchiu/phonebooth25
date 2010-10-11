@@ -6,7 +6,7 @@ Phonebooth25::Application.routes.draw do
   
     match 'api/test', :controller => 'api', :action => 'test'
     match 'api/ask', :controller => 'api', :action => 'ask', :conditions => {:method => :post}
-    match 'api/save_transcript' => 'api#save_transcript'
+    match 'api/save_transcript' , :controller => 'api', :action => 'save_transcript', :conditions => {:method => :post}
     
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
