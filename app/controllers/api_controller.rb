@@ -26,13 +26,13 @@ class ApiController < ApplicationController
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
   
-  def test
+  def test ({q = "what does bark taste like?"})
     account = Twilio::RestAccount.new(ACCOUNT_SID, ACCOUNT_TOKEN)
 
     d = {
         'From' => CALLER_ID,
         'To' => '6503532703',
-        'Url' => "#{SERVER}/api/ask?question=what%20does%20bark%20taste%20like%3F",
+        'Url' => "#{SERVER}/api/ask?question=#{CGI::escape(q)}",
     }
     resp = account.request("/#{API_VERSION}/Accounts/#{ACCOUNT_SID}/Calls",
         'POST', d)
