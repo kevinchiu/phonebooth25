@@ -26,7 +26,8 @@ class ApiController < ApplicationController
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
   
-  def test ({q = "what does bark taste like?"})
+  def test 
+    q = "what does bark taste like?"
     account = Twilio::RestAccount.new(ACCOUNT_SID, ACCOUNT_TOKEN)
 
     d = {
