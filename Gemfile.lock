@@ -66,6 +66,7 @@ GEM
     twiliolib (2.0.5)
       builder (>= 2.1.2)
     tzinfo (0.3.23)
+    url_escape (2009.06.24)
 
 PLATFORMS
   ruby
@@ -74,3 +75,4 @@ DEPENDENCIES
   rails (= 3.0.0)
   sqlite3-ruby
   twiliolib
+  url_escape

@@ -1,6 +1,6 @@
 class ApiController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  
+  require 'url_escape'
   require 'twiliolib'
   API_VERSION = '2010-04-01'
   ACCOUNT_SID = 'ACd41b8b7f2b6780fecb98e67e047d814b'
@@ -11,7 +11,7 @@ class ApiController < ApplicationController
   #/api/q=what does bark taste like?
   def save_transcript
     t = Transcript.new
-    t.question = CGI::unescape(params[:q])
+    t.question = URLescape::unescape(params[:q])
     t.phone = params[:Called]
     t.body = params[:TranscriptionText]
     t.save!
@@ -21,7 +21,7 @@ class ApiController < ApplicationController
     r = Twilio::Response.new
     q = params[:question]
     r.addSay q
-    r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?q=#{CGI::escape(q)}", :timeout => 5, :maxLength => 10})
+    r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?q=#{URLescape::escape(q)}", :timeout => 5, :maxLength => 10})
     r.addSay "that's interesting. goodbye."
     r.addHangup
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
