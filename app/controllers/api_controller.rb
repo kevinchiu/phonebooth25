@@ -10,13 +10,17 @@ class ApiController < ApplicationController
   # SERVER = 'http://localhost:3000'
   #/api/q=what does bark taste like?
   def save_transcript
-    puts params
+    t = Transcript.new
+    t.question = params[:q]
+    t.phone = 0
+    t.body = 0
   end
   
   def ask
     r = Twilio::Response.new
-    r.addSay params[:question]
-    r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript"})
+    q = params[:question]
+    r.addSay q
+    r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?q=#{q}"})
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
   

@@ -1,0 +1,27 @@
+<h1>Listing transcripts</h1>
+
+<table>
+  <tr>
+    <th>Phone</th>
+    <th>Question</th>
+    <th>Body</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @transcripts.each do |transcript| %>
+  <tr>
+    <td><%= transcript.phone %></td>
+    <td><%= transcript.question %></td>
+    <td><%= transcript.body %></td>
+    <td><%= link_to 'Show', transcript %></td>
+    <td><%= link_to 'Edit', edit_transcript_path(transcript) %></td>
+    <td><%= link_to 'Destroy', transcript, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Transcript', new_transcript_path %>
