@@ -17,7 +17,7 @@ class ApiController < ApplicationController
     d = {
         'From' => CALLER_ID,
         'To' => '6503532703',
-        'Url' => 'http://phonebooth25.heroku.com/api/ask?q=what does bark taste like?',
+        'Url' => 'http://phonebooth25.heroku.com/api/ask?q=what%20does%20bark%20taste%20like?',
     }
     resp = account.request("/#{API_VERSION}/Accounts/#{ACCOUNT_SID}/Calls",
         'POST', d)
