@@ -14,6 +14,7 @@ class ApiController < ApplicationController
     t.phone = params[:Called]
     t.body = params[:TranscriptionText]
     t.save!
+    render :text => "done"
   end
   
   def ask
