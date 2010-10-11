@@ -21,7 +21,7 @@ class ApiController < ApplicationController
     r = Twilio::Response.new
     q = params[:question]
     r.addSay q
-    r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?q=#{q}", :timeout => 10})
+    r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?q=#{q}", :timeout => 5, :maxLength => 10})
     r.addPause({:length => 5})
     r.addSay "that's interesting. goodbye."
     r.addHangup
@@ -33,7 +33,7 @@ class ApiController < ApplicationController
 
     d = {
         'From' => CALLER_ID,
-        'To' => '9709889323',
+        'To' => '6503532703',
         'Url' => "#{SERVER}/api/ask?question=what%20does%20bark%20taste%20like%3F",
     }
     resp = account.request("/#{API_VERSION}/Accounts/#{ACCOUNT_SID}/Calls",
