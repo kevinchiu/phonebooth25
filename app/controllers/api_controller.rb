@@ -7,7 +7,7 @@ class ApiController < ApplicationController
   #/api/q=what does bark taste like?
   def ask
     r = Twilio::Response.new
-    r.addSay params[:q]
+    r.addSay params[:question]
     render :xml => r.respond
   end
   
@@ -17,12 +17,13 @@ class ApiController < ApplicationController
     d = {
         'From' => CALLER_ID,
         'To' => '6503532703',
-        'Url' => 'http://phonebooth25.heroku.com/api/ask?q=what%20does%20bark%20taste%20like%3F',
+        'Url' => 'http://phonebooth25.heroku.com/api/ask?question=what%20does%20bark%20taste%20like%3F',
     }
     resp = account.request("/#{API_VERSION}/Accounts/#{ACCOUNT_SID}/Calls",
         'POST', d)
     resp.error! unless resp.kind_of? Net::HTTPSuccess
     puts "code: %s\nbody: %s" % [resp.code, resp.body]
+    render :nothing => true
   end
   
 end
