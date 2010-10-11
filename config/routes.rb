@@ -4,7 +4,7 @@ Phonebooth25::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
   
-    match 'api/test', :controller => 'api', :action => 'test'
+    match 'api/ask_question', :controller => 'api', :action => 'ask_question'
     match 'api/ask', :controller => 'api', :action => 'ask', :conditions => {:method => :post}
     match 'api/save_transcript' , :controller => 'api', :action => 'save_transcript'
     

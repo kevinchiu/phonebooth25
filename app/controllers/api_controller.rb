@@ -7,6 +7,7 @@ class ApiController < ApplicationController
   CALLER_ID = '6175063088'
   SERVER = 'http://phonebooth25.heroku.com'
   # SERVER = 'http://localhost:3000'
+  
   #/api/question=what does bark taste like?
   def save_transcript
     t = Transcript.new
@@ -27,13 +28,15 @@ class ApiController < ApplicationController
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
   
-  def test 
-    q = "what does bark taste like?"
+  #/api/ask_question?phone=6503532703&question=hello%20how%20are%20you%3F
+  def ask_question 
+    question = params[:question]
+    phone = params[:phone]
     account = Twilio::RestAccount.new(ACCOUNT_SID, ACCOUNT_TOKEN)
 
     d = {
         'From' => CALLER_ID,
-        'To' => '6503532703',
+        'To' => phone,
         'Url' => "#{SERVER}/api/ask?question=#{CGI::escape(q).gsub('+', '%20')}",
     }
     resp = account.request("/#{API_VERSION}/Accounts/#{ACCOUNT_SID}/Calls",
