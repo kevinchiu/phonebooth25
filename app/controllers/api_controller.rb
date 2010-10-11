@@ -1,4 +1,6 @@
 class ApiController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+  
   require 'twiliolib'
   API_VERSION = '2010-04-01'
   ACCOUNT_SID = 'ACd41b8b7f2b6780fecb98e67e047d814b'
