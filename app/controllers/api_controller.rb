@@ -1,5 +1,9 @@
 class ApiController < ApplicationController
   require 'twiliolib'
+  API_VERSION = '2010-04-01'
+  ACCOUNT_SID = 'ACd41b8b7f2b6780fecb98e67e047d814b'
+  ACCOUNT_TOKEN = 'b4c6d350426bec6c929781aa88917e57'
+  CALLER_ID = '6175063088'
   #/api/q=what does bark taste like?
   def ask
     r = Twilio::Response.new
@@ -13,7 +17,7 @@ class ApiController < ApplicationController
     d = {
         'From' => CALLER_ID,
         'To' => '6503532703',
-        'Url' => 'http://phonebooth25.heroku.com/api/ask',
+        'Url' => 'http://phonebooth25.heroku.com/api/ask?q=what does bark taste like?',
     }
     resp = account.request("/#{API_VERSION}/Accounts/#{ACCOUNT_SID}/Calls",
         'POST', d)
