@@ -4,11 +4,18 @@ class ApiController < ApplicationController
   ACCOUNT_SID = 'ACd41b8b7f2b6780fecb98e67e047d814b'
   ACCOUNT_TOKEN = 'b4c6d350426bec6c929781aa88917e57'
   CALLER_ID = '6175063088'
+  SERVER = 'http://phonebooth25.heroku.com'
+  # SERVER = 'http://localhost:3000'
   #/api/q=what does bark taste like?
+  def save_transcript
+    puts params
+  end
+  
   def ask
     r = Twilio::Response.new
     r.addSay params[:question]
-    render :xml => r.respond
+    r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript"})
+    render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond.to_xml 
   end
   
   def test
@@ -17,7 +24,7 @@ class ApiController < ApplicationController
     d = {
         'From' => CALLER_ID,
         'To' => '6503532703',
-        'Url' => 'http://phonebooth25.heroku.com/api/ask?question=what%20does%20bark%20taste%20like%3F',
+        'Url' => "#{SERVER}/api/ask?question=what%20does%20bark%20taste%20like%3F",
     }
     resp = account.request("/#{API_VERSION}/Accounts/#{ACCOUNT_SID}/Calls",
         'POST', d)
