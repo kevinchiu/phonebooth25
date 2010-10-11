@@ -13,7 +13,8 @@ class ApiController < ApplicationController
     t = Transcript.new
     t.question = params[:q]
     t.phone = 0
-    t.body = 0
+    t.body = params
+    t.save!
   end
   
   def ask
