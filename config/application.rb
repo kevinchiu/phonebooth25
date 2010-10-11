@@ -8,8 +8,6 @@ Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 module Phonebooth25
   class Application < Rails::Application
-    map.connect 'api/test', :controller => 'api', :action => 'test'
-    map.connect 'api/test', :controller => 'api', :action => 'ask', :conditions => {:method => :post}
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

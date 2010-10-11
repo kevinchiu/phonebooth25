@@ -1,7 +1,9 @@
 Phonebooth25::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
-
+  
+    match 'api/test', :controller => 'api', :action => 'test'
+    match 'api/ask', :controller => 'api', :action => 'ask', :conditions => {:method => :post}
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
