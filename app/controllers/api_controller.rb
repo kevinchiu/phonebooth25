@@ -21,9 +21,11 @@ class ApiController < ApplicationController
   
   def ask
     r = Twilio::Response.new
+    r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 119, :maxLength => 120})
     r.addPlay "/q1.wav"
-    r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 29, :maxLength => 30})
+    r.addGather
     r.addPlay "/q2.wav"
+    r.addGather
     # r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 29, :maxLength => 30})
     # r.addPlay "/q3.wav"
     # r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 29, :maxLength => 30})
