@@ -1,6 +1,7 @@
 class ApiController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  require 'twiliolib'
+  # require 'twiliolib'
+  require 'lib/twiliolib.rb'
   API_VERSION = '2010-04-01'
   ACCOUNT_SID = 'ACd41b8b7f2b6780fecb98e67e047d814b'
   ACCOUNT_TOKEN = 'b4c6d350426bec6c929781aa88917e57'
@@ -22,7 +23,7 @@ class ApiController < ApplicationController
   def ask
     r = Twilio::Response.new
     r.addPlay "/q1.wav"
-    r.addRecord({:beep => false, :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 29, :maxLength => 30})
+    r.addRecord({:playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 29, :maxLength => 30})
     r.addPlay "/q2.wav"
     # r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 29, :maxLength => 30})
     
