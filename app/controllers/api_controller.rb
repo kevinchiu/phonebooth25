@@ -7,7 +7,7 @@ class ApiController < ApplicationController
   CALLER_ID = '6175063088'
   SERVER = 'http://phonebooth25.heroku.com'
   # SERVER = 'http://localhost:3000'
-  
+
   #/api/question=what does bark taste like?
   def save_transcript
     t = Transcript.new
@@ -20,18 +20,34 @@ class ApiController < ApplicationController
   
   def ask
     r = Twilio::Response.new
-    q = params[:question]
-    r.addSay q
+    r.addPlay ""
     r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=#{CGI::escape(q).gsub('+', '%20')}", :timeout => 5, :maxLength => 10})
-    r.addSay "that's interesting. goodbye."
     r.addHangup
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
   
   #/api/ask_question?phone=6503532703&question=hello%20how%20are%20you%3F
-  def ask_question 
+  def ask_question
+    call_phone_with_question(params[:phone], params[:question])
+    render :nothing => true
+  end
+  
+  def multicall
+    # 6177154380 - Pushcart 1
+    # 6177154382 - Pushcart 2
+    # 6177154383 - Pushcart 3
+    # 6177154392 - Pushcart 4
+    # 6177154401 - Pushcart 5
+    phones = ["6177154380", "6177154382", "6177154383", "6177154392", "6177154401"]
     question = params[:question]
-    phone = params[:phone]
+    for phone in phones
+       call_phone_with_question(phone, question)
+    end
+  end
+  
+  private
+  
+  def call_phone_with_question(phone, question)
     account = Twilio::RestAccount.new(ACCOUNT_SID, ACCOUNT_TOKEN)
 
     d = {
@@ -43,7 +59,5 @@ class ApiController < ApplicationController
         'POST', d)
     resp.error! unless resp.kind_of? Net::HTTPSuccess
     puts "code: %s\nbody: %s" % [resp.code, resp.body]
-    render :nothing => true
   end
-  
 end
