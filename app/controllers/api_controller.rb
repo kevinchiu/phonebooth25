@@ -30,14 +30,14 @@ class ApiController < ApplicationController
   def ask2
     r = Twilio::Response.new
     r.addPlay "/q2.wav"
-    r.addRecord({:action => "#{SERVER}/ask3", :finishOnKey => "1", :playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 10, :maxLength => 30})
+    r.addRecord({:action => "#{SERVER}/api/ask3", :finishOnKey => "1", :playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 10, :maxLength => 30})
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
   
   def ask
     r = Twilio::Response.new
     r.addPlay "/q1.wav"
-    r.addRecord({:action => "#{SERVER}/ask2", :finishOnKey => "1", :playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 10, :maxLength => 30})
+    r.addRecord({:action => "#{SERVER}/api/ask2", :finishOnKey => "1", :playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 10, :maxLength => 30})
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
   
