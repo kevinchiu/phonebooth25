@@ -15,7 +15,7 @@ class ApiController < ApplicationController
     t.phone = params[:Called]
     t.body = params[:TranscriptionText]
     t.save!
-    DebugMailer.debug_email.deliver
+    open_door(1)
     render :nothing => true
   end
   
@@ -23,7 +23,7 @@ class ApiController < ApplicationController
     r = Twilio::Response.new
     r.addPlay "/q1.wav"
     r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 29, :maxLength => 30})
-    # r.addPlay "/q2.wav"
+    r.addPlay "/q2.wav"
     # r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 29, :maxLength => 30})
     # r.addPlay "/q3.wav"
     # r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=hi", :timeout => 29, :maxLength => 30})
@@ -64,5 +64,9 @@ class ApiController < ApplicationController
         'POST', d)
     resp.error! unless resp.kind_of? Net::HTTPSuccess
     puts "code: %s\nbody: %s" % [resp.code, resp.body]
+  end
+  
+  def open_door(number)
+    #open door number 
   end
 end
