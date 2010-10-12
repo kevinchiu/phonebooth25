@@ -20,7 +20,7 @@ class ApiController < ApplicationController
   
   def ask
     r = Twilio::Response.new
-    r.addPlay ""
+    r.addPlay "/q1.wav"
     r.addRecord({:transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=#{CGI::escape(q).gsub('+', '%20')}", :timeout => 5, :maxLength => 10})
     r.addHangup
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
