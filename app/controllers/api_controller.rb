@@ -44,7 +44,7 @@ class ApiController < ApplicationController
   
   #/api/ask_question?phone=6503532703&question=hello%20how%20are%20you%3F
   def ask_question
-    call_phone_with_question(params[:phone], params[:question])
+    call_phone(params[:phone])
     render :nothing => true
   end
   
@@ -54,22 +54,22 @@ class ApiController < ApplicationController
     # 6177154383 - Pushcart 3
     # 6177154392 - Pushcart 4
     # 6177154401 - Pushcart 5
-    phones = ["6177154380", "6177154382", "6177154383", "6177154392", "6177154401"]
-    question = params[:question]
+    # phones = ["6177154380", "6177154382", "6177154383", "6177154392", "6177154401"]
+    phones = ["9175452739", "9709889323", "6177154420"]
     for phone in phones
-       call_phone_with_question(phone, question)
+       call_phone(phone)
     end
   end
   
   private
   
-  def call_phone_with_question(phone, question)
+  def call_phone(phone)
     account = Twilio::RestAccount.new(ACCOUNT_SID, ACCOUNT_TOKEN)
-
+#     'Url' => "#{SERVER}/api/ask?question=#{CGI::escape(question).gsub('+', '%20')}",
     d = {
         'From' => CALLER_ID,
         'To' => phone,
-        'Url' => "#{SERVER}/api/ask?question=#{CGI::escape(question).gsub('+', '%20')}",
+        'Url' => "#{SERVER}/api/ask?question=hi",
     }
     resp = account.request("/#{API_VERSION}/Accounts/#{ACCOUNT_SID}/Calls",
         'POST', d)
