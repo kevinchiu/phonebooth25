@@ -68,7 +68,7 @@ class ApiController < ApplicationController
     for phone in phones
        call_phone(phone)
     end
-    render :text => "ok"
+    redirect_to "/"
   end
   
   private
@@ -85,7 +85,6 @@ class ApiController < ApplicationController
         'POST', d)
     resp.error! unless resp.kind_of? Net::HTTPSuccess
     puts "code: %s\nbody: %s" % [resp.code, resp.body]
-    redirect_to root
   end
   
   def open_door(number)
