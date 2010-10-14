@@ -68,7 +68,7 @@ class ApiController < ApplicationController
     for phone in phones
        call_phone(phone)
     end
-    redirect_to "/"
+    render :text => "calls sent"
   end
   
   private
