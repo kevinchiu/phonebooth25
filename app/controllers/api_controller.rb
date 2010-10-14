@@ -53,7 +53,7 @@ class ApiController < ApplicationController
   #/api/ask_question?phone=6503532703&question=hello%20how%20are%20you%3F
   def ask_question
     call_phone(params[:phone])
-    render :nothing => true
+    render :text => "call sent"
   end
   
   def multicall
