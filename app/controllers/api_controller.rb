@@ -45,6 +45,7 @@ class ApiController < ApplicationController
     r = Twilio::Response.new
     r.addPlay "/outro.mp3"
     r.addHangup
+    render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
   
   #/api/ask_question?phone=6503532703&question=hello%20how%20are%20you%3F
