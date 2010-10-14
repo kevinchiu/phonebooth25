@@ -8,11 +8,13 @@ class ApiController < ApplicationController
   CALLER_ID = '6175063088'
   SERVER = 'http://phonebooth25.heroku.com'
   # SERVER = 'http://localhost:3000'
-
+  DOOR = {"6177154380" => "1", "6177154382" => "2", "6177154383" => "3", "6177154392" => "4", "6177154401" => "5"}
   #/api/question=what does bark taste like?
+  Q = {"q1" => "What is your earliest memory?","q2" => "What will be your lasting memory of this place?","q3" => "What does the future hold?"}
+  
   def save_transcript
     t = Transcript.new
-    t.question = params[:question]
+    t.question = Q[params[:question]]
     t.phone = params[:Called]
     t.body = params[:TranscriptionText]
     t.save!
