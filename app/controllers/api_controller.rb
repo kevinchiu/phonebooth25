@@ -42,7 +42,7 @@ class ApiController < ApplicationController
   end
   
   def outro
-    r.addPlay "outro.mp3"
+    r.addPlay "/outro.mp3"
     r.addHangup
   end
   
