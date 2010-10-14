@@ -42,6 +42,7 @@ class ApiController < ApplicationController
   end
   
   def outro
+    r = Twilio::Response.new
     r.addPlay "/outro.mp3"
     r.addHangup
   end
