@@ -60,9 +60,9 @@ class ApiController < ApplicationController
     # 6177154383 - Pushcart 3
     # 6177154392 - Pushcart 4
     # 6177154401 - Pushcart 5
-    # phones = ["6177154380", "6177154382", "6177154383", "6177154392", "6177154401"]
+    phones = ["6177154380", "6177154382", "6177154383", "6177154392", "6177154401"]
     # phones = ["9175452739", "9709889323", "6177154420"]
-    phones = ["9175452739"]
+    # phones = ["9175452739"]
     for phone in phones
        call_phone(phone)
     end
