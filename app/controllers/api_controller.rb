@@ -16,30 +16,34 @@ class ApiController < ApplicationController
     t.phone = params[:Called]
     t.body = params[:TranscriptionText]
     t.save!
-    open_door(1)
     render :nothing => true
   end
   
   def ask
     r = Twilio::Response.new
-    r.addPlay "/q1.wav"
+    r.addPlay "/intro.mp3"
+    r.addPlay "/q1.mp3"
     r.addRecord({:action => "#{SERVER}/api/ask2", :finishOnKey => "1", :playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=q1", :timeout => 10, :maxLength => 30})
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
   
   def ask2
     r = Twilio::Response.new
-    r.addPlay "/q2.wav"
+    r.addPlay "/q2.mp3"
     r.addRecord({:action => "#{SERVER}/api/ask3", :finishOnKey => "1", :playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=q2", :timeout => 10, :maxLength => 30})
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
 
   def ask3
     r = Twilio::Response.new
-    r.addPlay "/q3.wav"
-    r.addRecord({:finishOnKey => "1", :playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=q3", :timeout => 10, :maxLength => 30})
-    r.addHangup
+    r.addPlay "/q3.mp3"
+    r.addRecord({:action => "#{SERVER}/api/outro", :finishOnKey => "1", :playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=q3", :timeout => 10, :maxLength => 30})
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
+  end
+  
+  def outro
+    r.addPlay "outro.mp3"
+    r.addHangup
   end
   
   #/api/ask_question?phone=6503532703&question=hello%20how%20are%20you%3F
@@ -55,7 +59,8 @@ class ApiController < ApplicationController
     # 6177154392 - Pushcart 4
     # 6177154401 - Pushcart 5
     # phones = ["6177154380", "6177154382", "6177154383", "6177154392", "6177154401"]
-    phones = ["9175452739", "9709889323", "6177154420"]
+    # phones = ["9175452739", "9709889323", "6177154420"]
+    phones = ["9175452739"]
     for phone in phones
        call_phone(phone)
     end
