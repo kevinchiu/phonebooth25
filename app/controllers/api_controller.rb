@@ -8,36 +8,44 @@ class ApiController < ApplicationController
   CALLER_ID = '6175063088'
   SERVER = 'http://phonebooth25.heroku.com'
   # SERVER = 'http://localhost:3000'
-
+  DOOR = {"6177154380" => "1", "6177154382" => "2", "6177154383" => "3", "6177154392" => "4", "6177154401" => "5"}
   #/api/question=what does bark taste like?
+  Q = {"q1" => "What is your earliest memory?","q2" => "What will be your lasting memory of this place?","q3" => "What does the future hold?"}
+  
   def save_transcript
     t = Transcript.new
-    t.question = params[:question]
+    t.question = Q[params[:question]]
     t.phone = params[:Called]
     t.body = params[:TranscriptionText]
     t.save!
-    open_door(1)
     render :nothing => true
   end
   
   def ask
     r = Twilio::Response.new
-    r.addPlay "/q1.wav"
+    r.addPlay "/intro.mp3"
+    r.addPlay "/q1.mp3"
     r.addRecord({:action => "#{SERVER}/api/ask2", :finishOnKey => "1", :playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=q1", :timeout => 10, :maxLength => 30})
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
   
   def ask2
     r = Twilio::Response.new
-    r.addPlay "/q2.wav"
+    r.addPlay "/q2.mp3"
     r.addRecord({:action => "#{SERVER}/api/ask3", :finishOnKey => "1", :playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=q2", :timeout => 10, :maxLength => 30})
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
 
   def ask3
     r = Twilio::Response.new
-    r.addPlay "/q3.wav"
-    r.addRecord({:finishOnKey => "1", :playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=q3", :timeout => 10, :maxLength => 30})
+    r.addPlay "/q3.mp3"
+    r.addRecord({:action => "#{SERVER}/api/outro", :finishOnKey => "1", :playBeep => "false", :transcribe => true, :transcribeCallback => "#{SERVER}/api/save_transcript?question=q3", :timeout => 10, :maxLength => 30})
+    render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
+  end
+  
+  def outro
+    r = Twilio::Response.new
+    r.addPlay "/outro.mp3"
     r.addHangup
     render :xml => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + r.respond
   end
@@ -54,8 +62,9 @@ class ApiController < ApplicationController
     # 6177154383 - Pushcart 3
     # 6177154392 - Pushcart 4
     # 6177154401 - Pushcart 5
-    # phones = ["6177154380", "6177154382", "6177154383", "6177154392", "6177154401"]
-    phones = ["9175452739", "9709889323", "6177154420"]
+    phones = ["6177154380", "6177154382", "6177154383", "6177154392", "6177154401"]
+    # phones = ["9175452739", "9709889323", "6177154420"]
+    # phones = ["9175452739"]
     for phone in phones
        call_phone(phone)
     end
