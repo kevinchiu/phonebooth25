@@ -18,6 +18,7 @@ class ApiController < ApplicationController
     t.phone = params[:Called]
     t.body = params[:TranscriptionText]
     t.save!
+    open("http://pushcart.media.mit.edu:3000/printer/printout?text=#{CGI.escape(t.body)}")
     render :nothing => true
   end
   
